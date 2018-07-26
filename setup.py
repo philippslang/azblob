@@ -6,7 +6,7 @@ setup(
     version='0.1.0',
     author='Philipp Lang',
     packages=['azblob'],
-    url=('https://github.com/plang85/azure_blob_download'),
+    url=('https://github.com/plang85/azblob'),
     license='MIT License',
     description='Download Azure blobs.',
     long_description=open('README.rst').read(),
@@ -23,6 +23,6 @@ setup(
     install_requires=[
         "azure-storage-blob>=1.3.0",
         "azure-storage-file>=1.3.0",
-        "tqdm>=4.0.0"
+        "tqdm>=4.0.0",
     ],
 )

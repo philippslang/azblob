@@ -31,7 +31,7 @@ def credentials(f):
 
 
 @credentials
-def get(container, blob, accountname=None, accountkey=None):
+def download(container, blob, accountname=None, accountkey=None):
     block_blob_service = BlockBlobService(account_name=accountname, 
                                           account_key=accountkey)
     blob_target = os.path.join(os.getcwd(), blob)
@@ -42,24 +42,39 @@ def get(container, blob, accountname=None, accountkey=None):
             pbar.update_to(progress)
         block_blob_service.get_blob_to_path(container, blob, blob_target, 
                                             progress_callback=update)
+
+
+@credentials
+def upload(container, blob, accountname=None, accountkey=None):
+    pass
  
 
 def cli():
-    parser = argparse.ArgumentParser()
+    # azblob
+    parser = argparse.ArgumentParser(description='minimal Azure blob storage operations')
     parser.add_argument('-n', '--accountname', default=None)
     parser.add_argument('-k', '--accountkey', default=None)
-    subparsers = parser.add_subparsers(dest='blob_command',
-                                       help='options: get')
 
-    parser_get = subparsers.add_parser('get')
-    parser_get.add_argument('container')
-    parser_get.add_argument('blob')
+    subparsers = parser.add_subparsers(dest='blob_command',
+                                       help='blob operations')
+
+    # azblob download
+    parser_get = subparsers.add_parser('download', help='download blobs')
+    parser_get.add_argument('container', help='container name')
+    parser_get.add_argument('blob', help='blob name (file name)')
+
+    # azblob upload
+    parser_get = subparsers.add_parser('upload', help='upload blobs')
+    parser_get.add_argument('container', help='container name')
+    parser_get.add_argument('file', help='file name (blob name)')
 
     args = parser.parse_args()
     logger.info('cli args: {}'.format(args))
-    
-    if args.blob_command == 'get':
-        get(args.container, args.blob, args.accountname, args.accountkey)
+
+    if args.blob_command == 'download':
+        download(args.container, args.blob, args.accountname, args.accountkey)
+    elif args.blob_command == 'upload':
+        upload(args.container, args.blob, args.accountname, args.accountkey)
 
 
 if __name__ == '__main__':
