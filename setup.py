@@ -23,5 +23,6 @@ setup(
     install_requires=[
         "azure-storage-blob>=1.3.0",
         "azure-storage-file>=1.3.0",
+        "tqdm>=4.0.0"
     ],
 )
