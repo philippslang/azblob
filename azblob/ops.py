@@ -44,7 +44,7 @@ def get(container, blob, accountname=None, accountkey=None):
                                             progress_callback=update)
  
 
-def entry():
+def cli():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--accountname', default=None)
     parser.add_argument('-k', '--accountkey', default=None)
@@ -56,12 +56,11 @@ def entry():
     parser_get.add_argument('blob')
 
     args = parser.parse_args()
-
     logger.info('cli args: {}'.format(args))
     
     if args.blob_command == 'get':
         get(args.container, args.blob, args.accountname, args.accountkey)
 
 
-    
-    
+if __name__ == '__main__':
+    cli()

@@ -17,7 +17,7 @@ setup(
             'Topic :: Software Development'],
     entry_points={
         'console_scripts': [
-            'azblob = azblob.run:entry'
+            'azblob = azblob.ops:cli'
         ]
     },
     install_requires=[
