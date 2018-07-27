@@ -23,7 +23,7 @@ Using credentials from environment
 
 .. code-block:: bash
 
-    $ export AZBLOB_ACCOUNTNAME=
+    $ export AZBLOB_ACCOUNTNAME=my_accountname
     $ export AZBLOB_ACCOUNTKEY=my_accountkey
     $ azblob download my_container my_blob
 
