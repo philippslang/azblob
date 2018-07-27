@@ -36,7 +36,7 @@ Using credentials from command line
 
 and as always
 
-..code-block:: bash
+.. code-block:: bash
 
     $ azblob -h
     $ azblob download -h
