@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="azblob",
-    version="0.0.1",
+    version="0.0.3",
     author="Philipp Lang",
     packages=["azblob"],
     url=("https://github.com/plang85/azblob"),
@@ -11,7 +11,6 @@ setup(
     description="Download Azure blobs.",
     long_description=open("README.rst").read(),
     classifiers=[
-        "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3.6",
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development",

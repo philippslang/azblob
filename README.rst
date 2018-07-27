@@ -33,3 +33,10 @@ Using credentials from command line
 .. code-block:: bash
 
     $ azblob -n my_accountname -k my_accountkey download my_container my_blob
+
+and as always
+
+..code-block:: bash
+
+    $ azblob -h
+    $ azblob download -h
