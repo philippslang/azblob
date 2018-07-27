@@ -12,7 +12,7 @@ Installation
 
 To install:
 
-.. code-block: bash
+.. code-block:: bash
 
     $ pip install azblob
 
