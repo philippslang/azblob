@@ -1,7 +1,7 @@
 Azure Blob
 ==========
 
-.. image:: https://img.shields.io/badge/code%20style-black.000000.svg
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
  :target: https://github.com/ambv/black
 
 One-line CLI to download from Azure blob storage. Supports private blobs.
@@ -23,8 +23,8 @@ Using credentials from environment
 
 .. code-block:: bash
 
-    $ export AZBLOB_ACCOUNTNAME=xxx
-    $ export AZBLOB_ACCOUNTKEY=yyy
+    $ export AZBLOB_ACCOUNTNAME=
+    $ export AZBLOB_ACCOUNTKEY=my_accountkey
     $ # downloads 'blob' from 'container' to cwd
     $ azblob download my_container my_blob
 
@@ -33,6 +33,6 @@ Using credentials from command line
 
 .. code-block:: bash
 
-    $ # using account 'xxx' with access key 'yyy'
+    $ # using account 'my_accountname' with access key 'my_accountkey'
     $ # downloads 'blob' from 'container' to cwd
-    $ azblob -n xxx -k yyy download my_container my_blob
+    $ azblob -n my_accountname -k my_accountkey download my_container my_blob
