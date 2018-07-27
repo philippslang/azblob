@@ -25,7 +25,6 @@ Using credentials from environment
 
     $ export AZBLOB_ACCOUNTNAME=
     $ export AZBLOB_ACCOUNTKEY=my_accountkey
-    $ # downloads 'blob' from 'container' to cwd
     $ azblob download my_container my_blob
 
 
@@ -33,6 +32,4 @@ Using credentials from command line
 
 .. code-block:: bash
 
-    $ # using account 'my_accountname' with access key 'my_accountkey'
-    $ # downloads 'blob' from 'container' to cwd
     $ azblob -n my_accountname -k my_accountkey download my_container my_blob
