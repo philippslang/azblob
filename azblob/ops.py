@@ -18,8 +18,8 @@ logger.addHandler(console_logger_handler)
 
 
 def parse_credentials(accountname, accountkey):
-    accountname = accountname or os.environ["AZ_ACCOUNT_NAME"]
-    accountkey = accountkey or os.environ.get("AZ_ACCOUNT_KEY")
+    accountname = accountname or os.environ["AZBLOB_ACCOUNTNAME"]
+    accountkey = accountkey or os.environ.get("AZBLOB_ACCOUNTKEY")
     return accountname, accountkey
 
 
@@ -52,11 +52,6 @@ def download(container, blob, accountname=None, accountkey=None):
         )
 
 
-@credentials
-def upload(container, blob, accountname=None, accountkey=None):
-    pass
-
-
 def cli():
     # azblob
     parser = argparse.ArgumentParser(
@@ -65,25 +60,18 @@ def cli():
     parser.add_argument("-n", "--accountname", default=None)
     parser.add_argument("-k", "--accountkey", default=None)
 
-    subparsers = parser.add_subparsers(dest="blob_command", help="blob operations")
+    subparsers = parser.add_subparsers(dest="operation", help="blob operations")
 
     # azblob download
     parser_get = subparsers.add_parser("download", help="download blobs")
     parser_get.add_argument("container", help="container name")
     parser_get.add_argument("blob", help="blob name (file name)")
 
-    # azblob upload
-    parser_get = subparsers.add_parser("upload", help="upload blobs")
-    parser_get.add_argument("container", help="container name")
-    parser_get.add_argument("file", help="file name (blob name)")
-
     args = parser.parse_args()
-    logger.info("cli args: {}".format(args))
+    logger.info("cli args: op={}".format(args.operation))
 
-    if args.blob_command == "download":
+    if args.operation == "download":
         download(args.container, args.blob, args.accountname, args.accountkey)
-    elif args.blob_command == "upload":
-        upload(args.container, args.blob, args.accountname, args.accountkey)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,7 @@
+cache.txt
 .vscode/
+scripts/
+!scripts/poordevstest.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
