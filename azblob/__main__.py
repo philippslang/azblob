@@ -1,5 +1,5 @@
 from . import ops
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ops.cli()
