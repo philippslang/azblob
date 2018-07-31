@@ -9,7 +9,7 @@ setup(
     url=("https://github.com/plang85/azblob"),
     license="MIT License",
     description="Download Azure blobs.",
-    long_description=open("README.rst").read(),
+    long_description=open("README.md").read(),
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "License :: OSI Approved :: MIT License",

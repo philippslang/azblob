@@ -28,7 +28,7 @@ def credentials(f):
         accountname, accountkey = parse_credentials(accountname, accountkey)
         logger.info("Azure storage account name: '{}'".format(accountname))
         if accountkey is None:
-            logger.info("Using anonymous access.")
+            logger.info("using anonymous access.")
         return f(blob, container, accountname, accountkey)
 
     return f_with_credentials
