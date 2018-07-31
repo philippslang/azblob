@@ -19,23 +19,23 @@ $ pip install azblob
 
 **Anonymous** access, account name from command line
 ```
-$ azblob -n my_accountname download my_container my_blob
+$ azblob -n my_account download my_container my_blob
 ```
 **Anonymous** access, account name from environment
 ```
-$ export AZBLOB_ACCOUNTNAME=my_accountname
+$ export AZBLOB_ACCOUNTNAME=my_account
 $ azblob download my_container my_blob
 ```
 
 **Private** container, credentials from command line
 ```
-$ azblob -n my_accountname -k my_accountkey download my_container my_blob
+$ azblob -n my_account -k my_key download my_container my_blob
 ```
 
 **Private** container, credentials from environment
 ```
-$ export AZBLOB_ACCOUNTNAME=my_accountname
-$ export AZBLOB_ACCOUNTKEY=my_accountkey
+$ export AZBLOB_ACCOUNTNAME=my_account
+$ export AZBLOB_ACCOUNTKEY=my_key
 $ azblob download my_container my_blob
 ```
 
