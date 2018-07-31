@@ -3,13 +3,14 @@ from setuptools import setup
 
 setup(
     name="azblob",
-    version="0.0.2",
+    version="0.0.3",
     author="Philipp Lang",
     packages=["azblob"],
     url=("https://github.com/plang85/azblob"),
     license="MIT License",
     description="Download Azure blobs.",
     long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "License :: OSI Approved :: MIT License",
