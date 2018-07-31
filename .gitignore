@@ -1,6 +1,6 @@
 cache.txt
 .vscode/
-scripts/
+scripts/*
 !scripts/poordevstest.sh
 
 # Byte-compiled / optimized / DLL files
