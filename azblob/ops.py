@@ -24,22 +24,29 @@ def parse_credentials(accountname, accountkey):
 
 
 def credentials(f):
-    def f_with_credentials(blob, container, accountname=None, accountkey=None):
+    def f_with_credentials(
+        blob, container, accountname=None, accountkey=None, replace=True
+    ):
         accountname, accountkey = parse_credentials(accountname, accountkey)
         logger.info("Azure storage account name: '{}'".format(accountname))
         if accountkey is None:
             logger.info("using anonymous access.")
-        return f(blob, container, accountname, accountkey)
+        return f(blob, container, accountname, accountkey, replace)
 
     return f_with_credentials
 
 
 @credentials
-def download(container, blob, accountname=None, accountkey=None):
+def download(container, blob, accountname=None, accountkey=None, replace=True):
     block_blob_service = BlockBlobService(
         account_name=accountname, account_key=accountkey
     )
     blob_target = os.path.join(os.getcwd(), blob)
+    if not replace and os.path.isfile(blob_target):
+        logger.info(
+            "Skipping download, {} already exists and replace=False".format(blob_target)
+        )
+        return
     logger.info("downloading '{}/{}' to '{}'".format(container, blob, blob_target))
     with tqdmupto(total=100, ncols=80) as pbar:
 
@@ -66,12 +73,23 @@ def cli():
     parser_get = subparsers.add_parser("download", help="download blobs")
     parser_get.add_argument("container", help="container name")
     parser_get.add_argument("blob", help="blob name (file name)")
+    parser_get.add_argument(
+        "--dontreplace",
+        action="store_true",
+        help="Check if target download path exists and if so then dont download.",
+    )
 
     args = parser.parse_args()
     logger.info("cli args: op={}".format(args.operation))
 
     if args.operation == "download":
-        download(args.container, args.blob, args.accountname, args.accountkey)
+        download(
+            args.container,
+            args.blob,
+            args.accountname,
+            args.accountkey,
+            not args.dontreplace,
+        )
 
 
 if __name__ == "__main__":
