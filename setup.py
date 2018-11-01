@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="azblob",
-    version="0.0.5",
+    version="0.0.6",
     author="Philipp Lang",
     packages=["azblob"],
     url=("https://github.com/plang85/azblob"),
@@ -21,6 +21,7 @@ setup(
         "azure-storage-blob>=1.3.0",
         "azure-storage-file>=1.3.0",
         "tqdm>=4.0.0",
+        "tabulate>=0.8.2",
     ],
     extras_require={"dev": ["black", "twine"]},
 )

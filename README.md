@@ -39,6 +39,11 @@ $ export AZBLOB_ACCOUNTKEY=my_key
 $ azblob download my_container my_blob
 ```
 
+same principal (authenticatino)
+```
+azblob list my_container
+```
+
 and, as always
 ```
 $ azblob -h
