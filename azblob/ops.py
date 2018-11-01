@@ -102,6 +102,29 @@ def listblobs(container, accountname=None, accountkey=None, nmax=None):
     print(tabulate.tabulate(table_rows, headers=table_header))
 
 
+@credentials
+def listcontainers(accountname=None, accountkey=None, nmax=None):
+    block_blob_service = BlockBlobService(
+        account_name=accountname, account_key=accountkey
+    )
+    logger.info("listing containers in '{}'".format(accountname))
+    if nmax is None:
+        nmax = sys.maxsize
+    containers = block_blob_service.list_containers()
+    table_header = ("Name", "Date")
+    table_rows = [
+        (container.name,) for i, container in enumerate(containers) if i < nmax
+    ]
+    print(tabulate.tabulate(table_rows, headers=table_header))
+
+
+def listdispatch(container=None, accountname=None, accountkey=None, nmax=None):
+    if container is not None:
+        listblobs(container, accountname, accountkey, nmax)
+    else:
+        listcontainers(accountname=accountname, accountkey=accountkey, nmax=nmax)
+
+
 def cli():
     # azblob
     parser = argparse.ArgumentParser(
@@ -123,8 +146,12 @@ def cli():
     )
 
     # azblob list
-    parser_get = subparsers.add_parser("list", help="list blobs in container")
-    parser_get.add_argument("container", help="container name")
+    parser_get = subparsers.add_parser(
+        "list", help="list containers and blob in containers"
+    )
+    parser_get.add_argument(
+        "container", nargs="?", help="container name, list blobs in it", default=None
+    )
     parser_get.add_argument(
         "--nmax", type=int, help="maximum number of blobs to list", default=10
     )
@@ -141,7 +168,7 @@ def cli():
             replace=not args.dontreplace,
         )
     elif args.operation == "list":
-        listblobs(
+        listdispatch(
             args.container,
             accountname=args.accountname,
             accountkey=args.accountkey,

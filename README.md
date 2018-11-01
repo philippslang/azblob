@@ -17,6 +17,7 @@ $ pip install azblob
 
 ## CLI
 
+### Download blob (and authentication illustration)
 **Anonymous** access, account name from command line
 ```
 $ azblob -n my_account download my_container my_blob
@@ -39,13 +40,19 @@ $ export AZBLOB_ACCOUNTKEY=my_key
 $ azblob download my_container my_blob
 ```
 
-same principal (authenticatino)
+### List containers and blobs
+Same authentication mechanism. List blobs in `my_container`
 ```
 azblob list my_container
+```
+List all containers in account
+```
+azblob list
 ```
 
 and, as always
 ```
 $ azblob -h
 $ azblob download -h
+$ azblob list -h
 ```

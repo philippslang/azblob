@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name="azblob",
-    version="0.0.6",
+    version="0.1.1",
     author="Philipp Lang",
     packages=["azblob"],
     url=("https://github.com/plang85/azblob"),
