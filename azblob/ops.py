@@ -162,7 +162,7 @@ def cli():
     )
 
     args = parser.parse_args()
-    logger.info("cli args: op={}".format(args.operation))
+    logger.debug("cli args: op={}".format(args.operation))
 
     if args.operation == "download":
         download(
