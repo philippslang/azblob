@@ -65,14 +65,14 @@ def downloadapi(
         )
 
 
-def download(container, blob, accountname=None, accountkey=None, replace=True):
+def download(container, blob, accountname=None, accountkey=None, replace=True, target=None):
     downloadapi(
         container,
         blob,
-        accountname=None,
-        accountkey=None,
+        accountname=accountname,
+        accountkey=accountkey,
         replace=replace,
-        blob_target=None,
+        blob_target=target,
     )
 
 
@@ -85,6 +85,7 @@ def listblobsapi(container, accountname=None, accountkey=None, nmax=None):
     if nmax is None:
         nmax = sys.maxsize
     blobs = block_blob_service.list_blobs(container)
+    # TODO use namedtuple
     blob_list = [
         {"name": blob.name, "date": blob.properties.creation_time}
         for i, blob in enumerate(blobs)
@@ -144,6 +145,10 @@ def cli():
         action="store_true",
         help="Check if target download path exists and if so then dont download.",
     )
+    parser_get.add_argument(
+        "--target", default=None,
+        help="Target file name.",
+    )
 
     # azblob list
     parser_get = subparsers.add_parser(
@@ -166,6 +171,7 @@ def cli():
             accountname=args.accountname,
             accountkey=args.accountkey,
             replace=not args.dontreplace,
+            target=args.target
         )
     elif args.operation == "list":
         listdispatch(
