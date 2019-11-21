@@ -3,10 +3,8 @@ import logging
 import os
 import sys
 
-from azure.storage.blob import BlockBlobService, PublicAccess
+from azure.storage.blob import BlobClient, ContainerClient
 import tabulate
-
-from .auxilliaries import tqdmupto
 
 logger = logging.getLogger("azblob")
 logger.setLevel(logging.DEBUG)
@@ -42,8 +40,8 @@ def credentials(f):
 def downloadapi(
     container, blob, accountname=None, accountkey=None, replace=True, blob_target=None
 ):
-    block_blob_service = BlockBlobService(
-        account_name=accountname, account_key=accountkey
+    block_blob_service = BlobClient(
+        accountname, container, blob, credential=accountkey
     )
     blob_target = blob_target or os.path.join(os.getcwd(), blob)
     if not replace and os.path.isfile(blob_target):
@@ -54,15 +52,10 @@ def downloadapi(
         )
         return
     logger.info("downloading '{}/{}' to '{}'".format(container, blob, blob_target))
-    with tqdmupto(total=100, ncols=80) as pbar:
-
-        def update(current, total):
-            progress = int(100.0 * (current / total) + 0.5)
-            pbar.update_to(progress)
-
-        block_blob_service.get_blob_to_path(
-            container, blob, blob_target, progress_callback=update
-        )
+    with open(blob_target, "wb") as f:
+        blob_data = block_blob_service.download_blob()
+        blob_data.readinto(f)
+    logger.info("finished download")
 
 
 def download(container, blob, accountname=None, accountkey=None, replace=True, target=None):
@@ -77,17 +70,17 @@ def download(container, blob, accountname=None, accountkey=None, replace=True, t
 
 
 @credentials
-def listblobsapi(container, accountname=None, accountkey=None, nmax=None):
-    block_blob_service = BlockBlobService(
-        account_name=accountname, account_key=accountkey
+def listblobsapi(container, accountname, accountkey=None, nmax=None):
+    block_blob_service = ContainerClient(
+        accountname, container, credential=accountkey
     )
     logger.info("listing blobs in '{}/{}'".format(accountname, container))
     if nmax is None:
         nmax = sys.maxsize
-    blobs = block_blob_service.list_blobs(container)
+    blobs = block_blob_service.list_blobs()
     # TODO use namedtuple
     blob_list = [
-        {"name": blob.name, "date": blob.properties.creation_time}
+        {"name": blob.name, "date": blob.creation_time}
         for i, blob in enumerate(blobs)
         if i < nmax
     ]
@@ -101,29 +94,7 @@ def listblobs(container, accountname=None, accountkey=None, nmax=None):
     table_header = ("Name", "Date")
     table_rows = [(blob["name"], blob["date"]) for blob in blobs]
     print(tabulate.tabulate(table_rows, headers=table_header))
-
-
-@credentials
-def listcontainers(accountname=None, accountkey=None, nmax=None):
-    block_blob_service = BlockBlobService(
-        account_name=accountname, account_key=accountkey
-    )
-    logger.info("listing containers in '{}'".format(accountname))
-    if nmax is None:
-        nmax = sys.maxsize
-    containers = block_blob_service.list_containers()
-    table_header = ("Name", "Date")
-    table_rows = [
-        (container.name,) for i, container in enumerate(containers) if i < nmax
-    ]
-    print(tabulate.tabulate(table_rows, headers=table_header))
-
-
-def listdispatch(container=None, accountname=None, accountkey=None, nmax=None):
-    if container is not None:
-        listblobs(container, accountname, accountkey, nmax)
-    else:
-        listcontainers(accountname=accountname, accountkey=accountkey, nmax=nmax)
+    
 
 
 def cli():
@@ -154,9 +125,7 @@ def cli():
     parser_get = subparsers.add_parser(
         "list", help="list containers and blob in containers"
     )
-    parser_get.add_argument(
-        "container", nargs="?", help="container name, list blobs in it", default=None
-    )
+    parser_get.add_argument("container", help="container name")
     parser_get.add_argument(
         "--nmax", type=int, help="maximum number of blobs to list", default=10
     )
@@ -174,12 +143,7 @@ def cli():
             target=args.target
         )
     elif args.operation == "list":
-        listdispatch(
-            args.container,
-            accountname=args.accountname,
-            accountkey=args.accountkey,
-            nmax=args.nmax,
-        )
+        listblobs(args.container, args.accountname, args.accountkey, args.nmax)
 
 
 if __name__ == "__main__":

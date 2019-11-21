@@ -20,34 +20,31 @@ $ pip install azblob
 ### Download blob (and authentication illustration)
 **Anonymous** access, account name from command line
 ```
-$ azblob -n my_account download my_container my_blob
+$ azblob -n account_url download my_container my_blob
 ```
+where `account_url` is e.g. `https://<storage name>.blob.core.windows.net`
 **Anonymous** access, account name from environment
 ```
-$ export AZBLOB_ACCOUNTNAME=my_account
+$ export AZBLOB_ACCOUNTNAME=account_url
 $ azblob download my_container my_blob
 ```
 
 **Private** container, credentials from command line
 ```
-$ azblob -n my_account -k my_key download my_container my_blob
+$ azblob -n account_url -k my_key download my_container my_blob
 ```
 
 **Private** container, credentials from environment
 ```
-$ export AZBLOB_ACCOUNTNAME=my_account
+$ export AZBLOB_ACCOUNTNAME=account_url
 $ export AZBLOB_ACCOUNTKEY=my_key
 $ azblob download my_container my_blob
 ```
 
-### List containers and blobs
+### List blobs
 Same authentication mechanism. List blobs in `my_container`
 ```
 azblob list my_container
-```
-List all containers in account
-```
-azblob list
 ```
 
 and, as always
